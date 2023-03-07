@@ -62,3 +62,51 @@ def reformat_name(name):
 reformat_vect = np.vectorize(reformat_name)
 new_colnames = np.concatenate((df.columns[:2],reformat_vect(df.columns[2:])))
 df.set_axis(new_colnames, axis=1, inplace=True)
+
+#Panic Rahatsızlığı verileri ve öznitelik bulma
+panicData = df[df.specificDisorder == "Panic disorder"]
+bant =panicData.index 
+
+panic_varyans = pd.DataFrame.var(panicData.iloc[:,2:], axis=1)
+bantp = panic_varyans.index=bant
+
+panic_std= pd.DataFrame.std(panicData.iloc[:,2:], axis=1)
+panic_std.index=bant
+
+panic_mean = pd.DataFrame.mean(panicData.iloc[:,2:], axis=1)
+panic_mean.index=bant
+
+panic_carpiklik = scipy.stats.skew(panicData.iloc[:,2:], axis=1) #çarpıklık
+panic_skewness = pd.Series(index=bantp,data=panic_carpiklik)
+
+panic_basiklik = scipy.stats.kurtosis(panicData.iloc[:,2:], axis=1) #basıklık
+panic_kurtosis = pd.Series(index=bantp,data=panic_basiklik)
+
+pE= entropy(panicData.iloc[:,2:], axis=1 , base=59)
+panicEntropy=pd.Series(index=bantp,data=pE)
+
+pne=max(pE)-pE
+panic_negengtropi=pd.Series(index=bantp,data=pne)
+
+panic=pd.DataFrame.transpose(panicData)
+pdata = panic.iloc[2:,:]
+
+pcoef , pfreq  = pywt.cwt(pdata, np.arange(1,60),'morl' )
+pfreq2=pd.Series(index=bantp,data=pfreq)
+#plt.matshow(pcoef) 
+#plt.show() 
+
+#hjort
+pactivity = eeglib.features.hjorthActivity(panic.iloc[2:,:])
+pactivity.index=bant
+
+pcomplexity = eeglib.features.hjorthComplexity(panic.iloc[2:,:])
+pcomplexity.index=bant
+
+pmobility = eeglib.features.hjorthMobility(panic.iloc[2:,:])
+pmobility.index=bant
+
+new_data=[panic_varyans,panic_std,panic_mean,panic_skewness,panic_kurtosis,panicEntropy,
+          panic_negengtropi,pactivity,pcomplexity,pmobility,pfreq2]
+datalar=pd.DataFrame(new_data)
+datap=pd.DataFrame.transpose(datalar)
