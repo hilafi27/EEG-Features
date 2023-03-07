@@ -110,3 +110,51 @@ new_data=[panic_varyans,panic_std,panic_mean,panic_skewness,panic_kurtosis,panic
           panic_negengtropi,pactivity,pcomplexity,pmobility,pfreq2]
 datalar=pd.DataFrame(new_data)
 datap=pd.DataFrame.transpose(datalar)
+
+#Anxiety Rahatsızlığı verileri ve öznitelik bulma
+anxietyData = df[df.specificDisorder == "Social anxiety disorder"]
+banta =anxietyData.index 
+
+anxiety_varyans = pd.DataFrame.var(anxietyData.iloc[:,2:],axis=1)
+bantan = anxiety_varyans.index=banta
+
+anxiety_std = pd.DataFrame.std(anxietyData.iloc[:,2:],axis=1)
+anxiety_std.index=banta
+
+anxiety_mean = pd.DataFrame.mean(anxietyData.iloc[:,2:],axis=1)
+anxiety_mean.index=banta
+
+anxiety_carpiklik = scipy.stats.skew(anxietyData.iloc[:,2:],axis=1) #çarpıklık
+anxiety_skewness = pd.Series(index=banta,data=anxiety_carpiklik)
+
+anxiety_basiklik = scipy.stats.kurtosis(anxietyData.iloc[:,2:],axis=1) #basıklık
+anxiety_kurtosis = pd.Series(index=banta,data=anxiety_basiklik)
+
+aE= entropy(anxietyData.iloc[:,2:], axis=1,base=50)
+anxietyEntropy=pd.Series(index=banta,data=aE)
+
+ane=max(aE)-aE
+anxiety_negentropi=pd.Series(index=banta,data=ane)
+anxiety=pd.DataFrame.transpose(anxietyData)
+
+adata = anxiety.iloc[2:,:]
+acoef , afreq  = pywt.cwt(adata , np.arange(1,49), 'morl')
+afreq2=pd.Series(index=banta,data=afreq)
+#plt.matshow(acoef) 
+#plt.show() 
+
+#hjort
+aactivity = eeglib.features.hjorthActivity(anxiety.iloc[2:,:])
+aactivity.index=banta
+
+acomplexity = eeglib.features.hjorthComplexity(anxiety.iloc[2:,:])
+acomplexity.index=banta
+
+amobility = eeglib.features.hjorthMobility(anxiety.iloc[2:,:])
+amobility.index=banta
+
+new_data1=[anxiety_varyans,anxiety_std,anxiety_mean,anxiety_skewness,anxiety_kurtosis,
+           anxietyEntropy,anxiety_negentropi,aactivity,acomplexity,amobility,afreq2]
+datalar1=pd.DataFrame(new_data1)
+dataa=pd.DataFrame.transpose(datalar1)
+
