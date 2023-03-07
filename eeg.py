@@ -158,3 +158,25 @@ new_data1=[anxiety_varyans,anxiety_std,anxiety_mean,anxiety_skewness,anxiety_kur
 datalar1=pd.DataFrame(new_data1)
 dataa=pd.DataFrame.transpose(datalar1)
 
+datah=datap.append(dataa,ignore_index=True)
+
+banta=("anxiety","anxiety","anxiety","anxiety","anxiety","anxiety", "anxiety","anxiety","anxiety" ,"anxiety",
+       "anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety",
+       "anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety",
+       "anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety",
+       "anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety")
+
+bant=("panic","panic","panic","panic","panic","panic","panic","panic","panic","panic",
+      "panic","panic","panic","panic","panic","panic","panic","panic","panic","panic",
+      "panic","panic","panic","panic","panic","panic","panic","panic","panic","panic",
+      "panic","panic","panic","panic","panic","panic","panic","panic","panic","panic",
+      "panic","panic","panic","panic","panic","panic","panic","panic","panic","panic",
+      "panic","panic","panic","panic","panic","panic","panic","panic","panic")
+
+newcolumn=list(bant+banta)
+datah['hastalik']=pd.Series(newcolumn)
+datah.rename(columns = { 0:'varyans', 1:'std',2:'ortalama',3:'skewness',4:'kurtosis',5:'entropi',
+                         6 :'neg_entropi',7:'h_activity',8:'h_complexity',9:'h_mobility',10:'w_freq'}, inplace = True)
+
+datah = datah.sample(frac=1).reset_index(drop=True)
+datah.to_csv('feature_pa.csv')
