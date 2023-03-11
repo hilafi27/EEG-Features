@@ -160,19 +160,8 @@ dataa=pd.DataFrame.transpose(datalar1)
 
 datah=datap.append(dataa,ignore_index=True)
 
-banta=("anxiety","anxiety","anxiety","anxiety","anxiety","anxiety", "anxiety","anxiety","anxiety" ,"anxiety",
-       "anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety",
-       "anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety",
-       "anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety",
-       "anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety","anxiety")
-
-bant=("panic","panic","panic","panic","panic","panic","panic","panic","panic","panic",
-      "panic","panic","panic","panic","panic","panic","panic","panic","panic","panic",
-      "panic","panic","panic","panic","panic","panic","panic","panic","panic","panic",
-      "panic","panic","panic","panic","panic","panic","panic","panic","panic","panic",
-      "panic","panic","panic","panic","panic","panic","panic","panic","panic","panic",
-      "panic","panic","panic","panic","panic","panic","panic","panic","panic")
-
+banta=["anxiety"] * 48
+bant=["panic"] * 59
 newcolumn=list(bant+banta)
 datah['hastalik']=pd.Series(newcolumn)
 datah.rename(columns = { 0:'varyans', 1:'std',2:'ortalama',3:'skewness',4:'kurtosis',5:'entropi',
